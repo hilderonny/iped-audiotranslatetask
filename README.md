@@ -1,2 +1,3 @@
 # iped-audiotranslatetask
-IPED Task for audio translation via distributed workers
+
+[IPED](https://github.com/sepinf-inc/IPED) task for audio translation via distributed workers.
