@@ -12,7 +12,6 @@ import json
 import shutil
 import stat
 logging.basicConfig(format='%(asctime)s [%(levelname)s] [AudioTranslateTask.py] %(message)s', level=logging.DEBUG)
-logging.getLogger("faster_whisper").setLevel(logging.DEBUG)
 
 # Configuration properties
 enableProp = "enableAudioTranslation"
