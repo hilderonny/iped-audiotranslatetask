@@ -16,10 +16,12 @@ configFile = "AudioTranslation.txt"
 inputDirectoryProp = "inputDirectory"
 outputDirectoryProp = "outputDirectory"
 processVideoProp = "processVideo"
+maxVideoLengthProp = "maxVideoLength"
 
 INPUT_DIR = None
 OUTPUT_DIR = None
 PROCESS_VIDEO = False
+MAX_VIDEO_LENGTH = 0
 
 def readJsonFile(file_path):
     with open(file_path) as json_file:
@@ -48,6 +50,7 @@ class AudioTranslateTask:
         INPUT_DIR = extraProps.getProperty(inputDirectoryProp)
         OUTPUT_DIR = extraProps.getProperty(outputDirectoryProp)
         PROCESS_VIDEO = True if extraProps.getProperty(processVideoProp) == "true" else False
+        MAX_VIDEO_LENGTH = extraProps.getProperty(maxVideoLengthProp)
 
     def finish(self):
         return
@@ -61,8 +64,19 @@ class AudioTranslateTask:
                 return
             media_type = item.getMediaType().toString()
 
-            if not (media_type.startswith('audio') or (PROCESS_VIDEO and media_type.startswith('video'))):
+            is_audio = media_type.startswith('audio')
+            is_video = media_type.startswith('video')
+
+            if not (is_audio or (PROCESS_VIDEO and is_video)):
                 return
+            
+            meta_data = item.getMetadata()
+
+            # Check duration of audio or video file
+            if is_video:
+                video_duration = meta_data.get("video:xmpDM:duration")
+                if not (video_duration is None) and video_duration.isdecimal() and int(video_duration) > MAX_VIDEO_LENGTH:
+                    return
             
             logger.info("[AudioTranslateTask.py] Processing item " + item_name + " of media type " + media_type + " with hash " + item_hash)
             source_file_path = item.getTempFile().getAbsolutePath()
@@ -82,7 +96,6 @@ class AudioTranslateTask:
             # Process result file and extract metadata
             result = readJsonFile(output_file_path)
 
-            meta_data = item.getMetadata()
             if "language" in result:
                 meta_data.set("audio:translation:language", result["language"])
             if "original" in result:

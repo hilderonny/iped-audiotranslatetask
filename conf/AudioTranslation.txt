@@ -14,3 +14,8 @@ outputDirectory = ./data/output
 # Use video processing with caution. It can take very long if you analyze
 # full length cinema movies
 processVideo = true
+
+# Define the maximum length of a video file in seconds which should be processed.
+# Can be used to filter out movie files.
+# Set to 0 (zero) to disable the filter.
+maxVideoLength = 0
