@@ -2,24 +2,12 @@
 # When enabled, each item gets additional properties:
 # "audio:translation:language" - Detected language code
 # "audio:translation:original" - Audio transcription in the original language
-# "audio:translation:en" - Transcription converted from original language into english by Whisper
-# "audio:translation:de" - Transcribed text converted into target language by Argos Translate. The suffixs depends on the target language
-
-# Directory where the task puts the audio files to process
-inputDirectory = ./data/input
-
-# Directory where the background task puts the results and where the tasks fetches them
-outputDirectory = ./data/output
+# "audio:translation:translated" - Transcribed text converted into target language
 
 # Use video processing with caution. It can take very long if you analyze
 # full length cinema movies
 processVideo = true
 
-# Use forensic task bridge server instead of loacal processing
-useForensicTaskBridge
-
-# URL of the API of the forensic task bridge in the format http://127.0.0.1:30000/api/
-forensicTaskBridgeApiUrl
-
-# Directory where the task puts the audio files to process when a forensic task bridge server is used
-forensicTaskBridgeShareDirectory
+# URL of the API of the task bridge in the format http://192.168.0.152:42000/
+# Needs an installation of https://github.com/hildronny/taskbridge
+taskBridgeUrl = http://127.0.0.1:42000

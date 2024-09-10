@@ -39,7 +39,7 @@ while not task_transcribe_completed:
     status_transcribe_response = requests.get(f"{APIURL}tasks/status/{task_transcribe_id}")
     if status_transcribe_response.status_code != 200:
         print("ERROR while requesting transcribe status")
-        exit
+        exit()
     status_transcribe = status_transcribe_response.json()["status"]
     print(f"Status: {status_transcribe}")
     if status_transcribe == "completed":
@@ -55,6 +55,15 @@ print(transcribe_result)
 # Delete transcribe task
 requests.delete(f"{APIURL}tasks/remove/{task_transcribe_id}")
 
+if "result" not in transcribe_result:
+    print("ERROR transcribe_result.result missing")
+    exit()
+if "language" not in transcribe_result["result"]:
+    print("ERROR transcribe_result.result.language missing")
+    exit()
+if "texts" not in transcribe_result["result"]:
+    print("ERROR transcribe_result.result.texts missing")
+    exit()
 
 # Add translate task
 translate_json = {
@@ -68,7 +77,7 @@ translate_json = {
 add_translate_response = requests.post(f"{APIURL}tasks/add/", files={"Not": (None, "Used")}, data={ "json" : json.dumps(translate_json) })
 if add_translate_response.status_code != 200:
     print("ERROR while adding translate task")
-    exit
+    exit()
 task_translate_id = add_translate_response.json()["id"]
 print(task_translate_id)
 
@@ -78,7 +87,7 @@ while not task_translate_completed:
     status_translate_response = requests.get(f"{APIURL}tasks/status/{task_translate_id}")
     if status_translate_response.status_code != 200:
         print("ERROR while requesting translate status")
-        exit
+        exit()
     status_translate = status_translate_response.json()["status"]
     print(f"Status: {status_translate}")
     if status_translate == "completed":

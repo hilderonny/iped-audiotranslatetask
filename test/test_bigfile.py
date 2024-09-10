@@ -30,7 +30,7 @@ transcribe_json = { "type" : "transcribe" }
 add_response = requests.post(f"{APIURL}tasks/add/", files=files, data={ "json" : json.dumps(transcribe_json) })
 if add_response.status_code != 200:
     print("ERROR while adding task")
-    exit
+    exit()
 task_id = add_response.json()["id"]
 print(task_id)
 
@@ -40,7 +40,7 @@ while not task_completed:
     status_response = requests.get(f"{APIURL}tasks/status/{task_id}")
     if status_response.status_code != 200:
         print("ERROR while requesting status")
-        exit
+        exit()
     status = status_response.json()["status"]
     print(f"Status: {status}")
     if status == "completed":
