@@ -43,7 +43,7 @@ class AudioTranslateTask:
         taskBridgeUrl = extraProps.getProperty("taskBridgeUrl")
         if not taskBridgeUrl.endswith("/"):
             taskBridgeUrl = f"{taskBridgeUrl}/"
-        APIURL = f"{taskBridgeUrl}api/v2/"
+        APIURL = f"{taskBridgeUrl}api/"
 
     def process(self, item):
         item_name = item.getName()
@@ -175,5 +175,5 @@ class AudioTranslateTask:
             return result
 
         translate_text_list = list(map(lambda element: element["text"], translate_result["result"]["texts"]))
-        result["translate"] = " ".join(translate_text_list)
+        result["translated"] = " ".join(translate_text_list)
         return result
